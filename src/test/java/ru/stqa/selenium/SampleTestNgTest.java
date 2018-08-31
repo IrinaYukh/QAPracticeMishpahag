@@ -26,21 +26,22 @@ public class SampleTestNgTest extends TestNgTestBase {
   }
 
   @Test
-  public void testHomePageHasAHeader() {
+  public void testLoginPositive() {
 
-    WebElement loginLink = this.waitUntilElementIsLodedCustomTime(
+    WebElement loginLink = this.waitUntilElementIsLoadedCustomTime(
             By.xpath("//span[contains(text(),'Login')]"),
             40,
             "Login link was not loaded");
 
     loginLink.click();
-    WebElement buttonLogin = waitUntilElementIsLodedCustomTime(
+    WebElement buttonLogin = waitUntilElementIsLoadedCustomTime(
             By.xpath("//span[contains(text(),'Log in')]"),
             40,
             "Login field element was not loaded");
 
     List<WebElement> webElements
-            = driver.findElements(By.xpath("//div [@class='mat-input-infix mat-form-field-infix']/input"));
+            = driver.findElements(
+                    By.xpath("//div [@class='mat-input-infix mat-form-field-infix']/input"));
 
     WebElement fieldLogin = webElements.get(0);
     fieldLogin.click();
@@ -52,7 +53,7 @@ public class SampleTestNgTest extends TestNgTestBase {
 
     buttonLogin.click();
 
-    WebElement filterCities = waitUntilElementIsLodedCustomTime(
+    WebElement filterCities = waitUntilElementIsLoadedCustomTime(
             By.xpath("//div[@class='mat-select-value']"),
             40,
             "Filter Cities element was not loaded");
@@ -60,8 +61,54 @@ public class SampleTestNgTest extends TestNgTestBase {
     filterCities.click();
   }
 
+  @Test
+  public void testWrongPassword(){
 
-  private WebElement waitUntilElementIsLodedCustomTime(By by, int time, String error_message) {
+    WebElement loginLink = this.waitUntilElementIsLoadedCustomTime(
+            By.xpath("//span[contains(text(),'Login')]"),
+            40,
+            "Login link was not loaded");
+
+    loginLink.click();
+
+    WebElement buttonLogin = waitUntilElementIsLoadedCustomTime(
+            By.xpath("//span[contains(text(),'Log in')]"),
+            40,
+            "Login field element was not loaded");
+
+
+    List<WebElement> webElements
+            = driver.findElements(
+            By.xpath("//div [@class='mat-input-infix mat-form-field-infix']/input"));
+    WebElement fieldLogin = webElements.get(0);
+    fieldLogin.click();
+    fieldLogin.sendKeys("alexshufutinsk@gmail.com");
+
+    WebElement wrongPassword = webElements.get(1);
+    wrongPassword.click();
+    wrongPassword.sendKeys("ghghhghsgshsg");
+    //wrongPassword.click();
+    buttonLogin.click();
+    WebElement wrongMessage = waitUntilElementIsLoadedCustomTime(
+            By.xpath("//*[contains(text(),'Wrong authorization, login or password')]"),
+            50,
+            "Wrong message was not displayed");
+    WebElement cancelButton = waitUntilElementIsLoadedCustomTime(
+            By.xpath("//span[contains(text(),'Cancel')]"),
+            25,
+            "Cancel button wasn't found");
+
+    cancelButton.click();
+    WebElement linkGoToEvents = waitUntilElementIsLoadedCustomTime(
+            By.xpath("//span[contains(text(),'Go to Event list')]"),
+            30,
+            "'Go to Events List' wasn't loaded");
+
+
+  }
+
+
+  private WebElement waitUntilElementIsLoadedCustomTime(By by, int time, String error_message) {
     WebDriverWait wait = new WebDriverWait(driver, time);
     wait.withMessage(error_message + "\n");
     return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
