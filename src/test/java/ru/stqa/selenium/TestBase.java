@@ -16,7 +16,7 @@ import ru.stqa.selenium.factory.WebDriverPool;
 /**
  * Base class for TestNG-based test classes
  */
-public class TestNgTestBase {
+public class TestBase {
 
   protected static URL gridHubUrl = null;
   protected static String baseUrl;
