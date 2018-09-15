@@ -8,7 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import ru.stqa.selenium.pages.EventsListPage;
 import ru.stqa.selenium.pages.HomePage;
+import ru.stqa.selenium.pages.LoginPage;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,10 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class HomePageTest extends TestBase {
 
   private HomePage homepage;
+  private LoginPage loginPage;
+  private EventsListPage eventsListPage;
 
   @BeforeMethod
   public void initPageObjects() {
     homepage = PageFactory.initElements(driver, HomePage.class);
+    loginPage = PageFactory.initElements(driver, LoginPage.class);
+    eventsListPage = PageFactory.initElements(driver, EventsListPage.class);
     driver.get(baseUrl);
 
   }
@@ -38,38 +44,16 @@ public class HomePageTest extends TestBase {
 }
   @Test
   public void testLoginPositive() {
+    homepage.pageHomeLoading()
+            .loginLinkClick();
 
-    WebElement loginLink = homepage.waitUntilElementIsLoadedCustomTime(
-            By.xpath("//span[contains(text(),'Login')]"),
-            40,
-            "Login link was not loaded");
+    loginPage.loginPageLoading()
+              .enterLogin("alexshufutinsk@gmail.com")
+              .enterPassword("123456")
+              .loginButtonClick();
 
-    loginLink.click();
-    WebElement buttonLogin = homepage.waitUntilElementIsLoadedCustomTime(
-            By.xpath("//span[contains(text(),'Log in')]"),
-            40,
-            "Login field element was not loaded");
-
-    List<WebElement> webElements
-            = driver.findElements(
-                    By.xpath("//div [@class='mat-input-infix mat-form-field-infix']/input"));
-
-    WebElement fieldLogin = webElements.get(0);
-    fieldLogin.click();
-    fieldLogin.sendKeys("alexshufutinsk@gmail.com");
-
-    WebElement fieldPassword = webElements.get(1);
-    fieldPassword.click();
-    fieldPassword.sendKeys("123456");
-
-    buttonLogin.click();
-
-    WebElement filterCities = homepage.waitUntilElementIsLoadedCustomTime(
-            By.xpath("//div[@class='mat-select-value']"),
-            40,
-            "Filter Cities element was not loaded");
-
-    filterCities.click();
+    eventsListPage.eventsListPageLoading()
+                  .citiesButtonClick();
   }
 
   @Test
@@ -94,6 +78,7 @@ public class HomePageTest extends TestBase {
     WebElement fieldLogin = webElements.get(0);
     fieldLogin.click();
     fieldLogin.sendKeys("alexshufutinsk@gmail.com");
+    loginPage.enterLogin("alexshufutinsk@gmail.com");
 
     WebElement wrongPassword = webElements.get(1);
     wrongPassword.click();

@@ -32,6 +32,12 @@ public abstract class Page {
     return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
   }
 
+  public void waitUntilElementIsLoadedCustomTime(WebElement element, int time, String error_message) {
+    WebDriverWait wait = new WebDriverWait(driver, time);
+    wait.withMessage(error_message + "\n");
+    wait.until(ExpectedConditions.visibilityOf(element));
+  }
+
   public void waitUntilElementIsDisappearedCustomTime(WebElement element, int time, String error_message) {
     WebDriverWait wait = new WebDriverWait(driver, time);
     wait.withMessage(error_message + "\n");
