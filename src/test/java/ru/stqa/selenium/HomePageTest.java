@@ -31,7 +31,7 @@ public class HomePageTest extends TestBase {
   }
   @Test
   public void isHomePageTest(){
-    WebElement linkGoToEvents = homepage.waitUntilElementIsLoadedCustomTime(
+    WebElement linkGoToEvents2 = homepage.waitUntilElementIsLoadedCustomTime(
             By.xpath("//span[contains(text(),'Go to Event list')]"),
             40,
             "'Go to Events List' wasn't loaded");
